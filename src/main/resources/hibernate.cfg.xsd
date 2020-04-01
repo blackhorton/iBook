@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="hibernate-configuration" type="hibernate-configurationType"/>
+  <xs:complexType name="propertyType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="mappingType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="package" use="optional"/>
+        <xs:attribute type="xs:string" name="class" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="session-factoryType">
+    <xs:sequence>
+      <xs:element type="propertyType" name="property" maxOccurs="unbounded" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation><![CDATA[数据库链接驱动 链接地址用户名密码 <property name="connection.url">jdbc:mysql://qiujuer.net:6968/DB_I_T_PUSH?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false</property> JDBC 链接池大小  SQL 方言  Hibernate session 上下文为线程级别  配置C3P0缓存链接池  在连接池中可用数据库连接的最小数目在连接池中所有数据库连接的最大数目设定数据库连接的超时时间<property name="c3p0.time_out">1800</property>可以被缓存的PreparedStatement的最大数目 当连接池里面的连接用完的时候，C3P0一下获取的新的连接数  连接对象因该多长时间被自动校验的时间段，以秒为单位 seconds 最多可以创建Statements对象的个数. . 就是可以执行SQL语句的对象的个数 SQL语句输出  自动更新数据库的级别]]></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element type="mappingType" name="mapping" maxOccurs="unbounded" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>create：表示启动的时候先drop，再create
+        create-drop: 也表示创建，只不过再系统关闭前执行一下drop
+        update: 这个操作启动的时候会去检查schema是否一致，如果不一致会做scheme更新
+        validate: 启动时验证现有schema与你配置的hibernate是否一致，如果不一致就抛出异常，并不做更新</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="hibernate-configurationType">
+    <xs:sequence>
+      <xs:element type="session-factoryType" name="session-factory"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
